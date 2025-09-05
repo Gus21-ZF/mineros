@@ -148,7 +148,7 @@
 <body>
     <div class="login-container">
         <div class="login-header">
-            <div class="logo">MINERA<br>PORVENIR<br>ZACUALPAN</div>
+            <div class="logo">MINERA<br>ANDES<br>CHILE</div>
             <h1>Portal de Trabajadores Mineros</h1>
             <p>Ingrese sus credenciales para acceder al sistema</p>
         </div>
@@ -177,6 +177,7 @@
             <select id="language">
                 <option value="es">Español</option>
                 <option value="en">English</option>
+                <option value="pt">Português</option>
             </select>
         </div>
     </div>
@@ -197,19 +198,18 @@
             // Simulación de login exitoso
             alert('Login exitoso. Redirigiendo al portal...');
             
-            // En un caso real, aquí se enviarían los datos al servidor
-            console.log('Credenciales ingresadas:', {employeeId, password});
+            // Redirección a portal.html en GitHub Pages
+            // Para GitHub Pages, podemos usar una ruta relativa si está en el mismo repositorio
+            window.location.href = 'portal.html';
             
-            // Redirección (simulada)
-            // window.location.href = 'portal.html';
+            // Si está en un repositorio diferente, usar la URL completa:
+            // window.location.href = 'https://tuusuario.github.io/turepositorio/portal.html';
         });
         
         // Selector de idioma
         document.getElementById('language').addEventListener('change', function() {
             alert('Idioma cambiado a: ' + this.options[this.selectedIndex].text);
-            // En una implementación real, cambiaría el idioma de la interfaz
         });
     </script>
 </body>
 </html>
-
