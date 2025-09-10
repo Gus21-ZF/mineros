@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión Sindical</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a56db;
+            --secondary-color: #0e2b5c;
+            --accent-color: #ff6b35;
+            --light-color: #f3f4f6;
+            --dark-color: #1f2937;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .sidebar {
+            background-color: var(--secondary-color);
+            color: white;
+            height: 100vh;
+            position: fixed;
+            padding-top: 60px;
+        }
+        
+        .sidebar a {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 15px 20px;
+            display: block;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar a:hover, .sidebar a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .sidebar .logo {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            padding-top: 80px;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: calc(100% - 250px);
+            z-index: 1000;
+            margin-left: 250px;
+        }
+        
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            margin-bottom: 20px;
+            border: none;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+        }
+        
+        .stats-card {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .stats-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        .stats-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        
+        .recent-activities {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .recent-activities li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .recent-activities li:last-child {
+            border-bottom: none;
+        }
+        
+        .badge-success {
+            background-color: #10b981;
+        }
+        
+        .badge-warning {
+            background-color: #f59e0b;
+        }
+        
+        .badge-info {
+            background-color: #3b82f6;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .section-title {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra lateral -->
+    <div class="sidebar col-md-2 col-lg-2 d-md-block">
+        <div class="logo">
+            <h3><i class="fas fa-handshake me-2"></i> Sindicato App</h3>
+        </div>
+        <a href="#" class="active"><i class="fas fa-home me-2"></i> Inicio</a>
+        <a href="#"><i class="fas fa-users me-2"></i> Afiliados</a>
+        <a href="#"><i class="fas fa-file-invoice-dollar me-2"></i> Finanzas</a>
+        <a href="#"><i class="fas fa-clipboard-list me-2"></i> Asambleas</a>
+        <a href="#"><i class="fas fa-calendar-alt me-2"></i> Vacaciones</a>
+        <a href="#"><i class="fas fa-history me-2"></i> Historial Laboral</a>
+        <a href="#"><i class="fas fa-family me-2"></i> Familiares</a>
+        <a href="#"><i class="fas fa-cog me-2"></i> Configuración</a>
+        <a href="#"><i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión</a>
+    </div>
+
+    <!-- Barra de navegación superior -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="d-flex align-items-center ms-auto">
+                <div class="user-profile">
+                    <div class="user-avatar">AD</div>
+                    <div>
+                        <div class="fw-bold">Admin User</div>
+                        <small class="text-muted">Administrador</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+        <div class="container-fluid">
+            <h2 class="section-title">Panel de Control Principal</h2>
+            
+            <!-- Tarjetas de estadísticas -->
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card stats-card">
+                        <div class="stats-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stats-number">1,248</div>
+                        <div class="stats-label">Afiliados Activos</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card">
+                        <div class="stats-icon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <div class="stats-number">$86,500</div>
+                        <div class="stats-label">Recaudación Mensual</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card">
+                        <div class="stats-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <div class="stats-number">24</div>
+                        <div class="stats-label">Solicitudes Pendientes</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card stats-card">
+                        <div class="stats-icon">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div class="stats-number">5</div>
+                        <div class="stats-label">Próximas Asambleas</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-4">
+                <!-- Sección de Afiliados -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="fas fa-users me-2"></i> Afiliados Recientes</h5>
+                            <a href="#" class="btn btn-sm btn-light">Ver todos</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Fecha Afiliación</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>María Rodríguez</td>
+                                            <td>15/08/2023</td>
+                                            <td><span class="badge bg-success">Activo</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Carlos Méndez</td>
+                                            <td>10/08/2023</td>
+                                            <td><span class="badge bg-success">Activo</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Laura Sánchez</td>
+                                            <td>05/08/2023</td>
+                                            <td><span class="badge bg-warning">Pendiente</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jorge López</td>
+                                            <td>01/08/2023</td>
+                                            <td><span class="badge bg-success">Activo</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ana Martínez</td>
+                                            <td>28/07/2023</td>
+                                            <td><span class="badge bg-success">Activo</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección de Gestión Financiera -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i> Resumen Financiero</h5>
+                            <a href="#" class="btn btn-sm btn-light">Ver reporte</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="border-start border-4 border-primary ps-3">
+                                        <h6>Ingresos del Mes</h6>
+                                        <h4 class="text-primary">$86,500</h4>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="border-start border-4 border-warning ps-3">
+                                        <h6>Gastos del Mes</h6>
+                                        <h4 class="text-warning">$42,300</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <h6>Distribución de Gastos</h6>
+                            <div class="mb-2 d-flex justify-content-between">
+                                <span>Nómina personal</span>
+                                <span>$28,500</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 8px;">
+                                <div class="progress-bar bg-primary" style="width: 65%"></div>
+                            </div>
+                            
+                            <div class="mb-2 d-flex justify-content-between">
+                                <span>Gastos operativos</span>
+                                <span>$8,200</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 8px;">
+                                <div class="progress-bar bg-info" style="width: 20%"></div>
+                            </div>
+                            
+                            <div class="mb-2 d-flex justify-content-between">
+                                <span>Eventos y actividades</span>
+                                <span>$5,600</span>
+                            </div>
+                            <div class="progress mb-3" style="height: 8px;">
+                                <div class="progress-bar bg-success" style="width: 13%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-4">
+                <!-- Sección de Asambleas -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i> Próximas Asambleas</h5>
+                            <a href="#" class="btn btn-sm btn-light">Ver todas</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3 p-3 bg-light rounded">
+                                <div class="d-flex justify-content-between">
+                                    <h5>Asamblea General Ordinaria</h5>
+                                    <span class="badge bg-primary">15 Sept, 2023</span>
+                                </div>
+                                <p class="mb-1">Revisión de estados financieros y plan de trabajo para el próximo trimestre.</p>
+                                <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Salón Principal - 10:00 AM</small>
+                            </div>
+                            
+                            <div class="mb-3 p-3 bg-light rounded">
+                                <div class="d-flex justify-content-between">
+                                    <h5>Reunión Comisión de Vacaciones</h5>
+                                    <span class="badge bg-primary">22 Sept, 2023</span>
+                                </div>
+                                <p class="mb-1">Revisión y aprobación de solicitudes de vacaciones del tercer trimestre.</p>
+                                <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Sala de Juntas - 3:00 PM</small>
+                            </div>
+                            
+                            <div class="p-3 bg-light rounded">
+                                <div class="d-flex justify-content-between">
+                                    <h5>Asamblea Extraordinaria</h5>
+                                    <span class="badge bg-primary">05 Oct, 2023</span>
+                                </div>
+                                <p class="mb-1">Discusión sobre nueva propuesta de convenio colectivo.</p>
+                                <small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Salón Principal - 4:00 PM</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sección de Actividades Recientes -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0"><i class="fas fa-history me-2"></i> Actividades Recientes</h5>
+                            <a href="#" class="btn btn-sm btn-light">Ver historial</a>
+                        </div>
+                        <div class="card-body">
+                            <ul class="recent-activities">
+                                <li>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Nueva afiliación registrada</span>
+                                        <small class="text-muted">Hace 2 horas</small>
+                                    </div>
+                                    <small class="text-muted">María Rodríguez se ha registrado en el sistema</small>
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Pago de cuota procesado</span>
+                                        <small class="text-muted">Hace 5 horas</small>
+                                    </div>
+                                    <small class="text-muted">Carlos Méndez realizó el pago de la cuota sindical</small>
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Solicitud de vacaciones</span>
+                                        <small class="text-muted">Ayer</small>
+                                    </div>
+                                    <small class="text-muted">Jorge López solicitó días de vacaciones</small>
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Acta de asamblea cargada</span>
+                                        <small class="text-muted">25 Ago, 2023</small>
+                                    </div>
+                                    <small class="text-muted">Se cargó el acta de la asamblea general de agosto</small>
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Actualización de datos</span>
+                                        <small class="text-muted">24 Ago, 2023</small>
+                                    </div>
+                                    <small class="text-muted">Se actualizó la información familiar de 15 afiliados</small>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Script básico para funcionalidades interactivas
+        document.addEventListener('DOMContentLoaded', function() {
+            // Aquí se pueden agregar interacciones más complejas en el futuro
+            console.log('Sistema de gestión sindical cargado');
+            
+            // Ejemplo: Actualizar la hora actual
+            function updateClock() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('es-ES');
+                document.getElementById('current-time').textContent = timeString;
+            }
+            
+            setInterval(updateClock, 1000);
+            updateClock();
+        });
+    </script>
+</body>
+</html>
